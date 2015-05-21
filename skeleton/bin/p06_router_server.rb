@@ -33,11 +33,16 @@ class Cats2Controller < Phase6::ControllerBase
   def index
     render_content($cats.to_s, "text/text")
   end
+
+  def new
+    render('new.html.erb')
+  end
 end
 
 router = Phase6::Router.new
 router.draw do
   get Regexp.new("^/cats$"), Cats2Controller, :index
+  get Regexp.new("^/cats/new$"), Cats2Controller, :new
   get Regexp.new("^/cats/(?<cat_id>\\d+)/statuses$"), StatusesController, :index
 end
 
