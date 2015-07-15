@@ -1,3 +1,5 @@
+require_relative './controller_base.rb'
+
 module Phase6
   class Route
     attr_reader :pattern, :http_method, :controller_class, :action_name
@@ -29,8 +31,9 @@ module Phase6
         route_params[:action_name] = @action_name
       end
 
-      controller = @controller_class.new(req, res, route_params)
-      controller.invoke_action(@action_name)
+      @controller_class
+        .new(req, res, route_params)
+        .invoke_action(@action_name)
     end
   end
 
@@ -71,9 +74,9 @@ module Phase6
 
     # either throw 404 or call run on a matched route
     def run(req, res)
-      route = match(req)
-      if route
-        route.run(req, res)
+      matching_route = match(req)
+      if matching_route
+        matching_route.run(req, res)
       else
         res.status = 404
       end
